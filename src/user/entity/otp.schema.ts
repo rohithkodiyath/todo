@@ -1,31 +1,24 @@
 
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument,  } from "mongoose";
+import { Prop, Schema, SchemaFactory, SchemaOptions } from '@nestjs/mongoose';
+import { HydratedDocument, SchemaType } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
+import {  Schema as MongooseSchema } from 'mongoose';
+import { User } from "./user.schema";
 
 
-export type UserDocument = HydratedDocument<User>;
+export type UserDocument = HydratedDocument<Otp>;
 
 @Schema({ timestamps: true })
-export class User {
+export class Otp {
 
+  //create a refernce object fo the user
+  @Prop({type : MongooseSchema.Types.ObjectId, ref : "User"})
+  user: User
 
-  @Prop({type : Date, isRequired : false})
-  dob: Date | null;
+  @Prop({type : Number})
+  otp : number
 
-  @Prop({isRequired : true})
-  email: string;
-
-  @Prop({isRequired : true})
-  firstName: string;
-
-  @Prop({isRequired : true})
-  lastName: string;
-
-  @Prop({isRequired : true})
-  password: string;
-
-  @Prop({type : Date})
+  @Prop({type : Date, expires : process.env.OTP_EXPIRY})
   updatedAt?: Date;
 
   @Prop()
@@ -36,4 +29,4 @@ export class User {
 
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const OtpSchema = SchemaFactory.createForClass(Otp);

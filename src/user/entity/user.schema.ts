@@ -1,13 +1,13 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument,  } from "mongoose";
-import uuid from "uuid"
+import { HydratedDocument,Document  } from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
 
 
-export type CatDocument = HydratedDocument<Cat>;
+export type UserDocument = HydratedDocument<User>;
 
 @Schema({ timestamps: true })
-export class UserEntity{
+export class User extends Document{
 
 
   @Prop({type : Date, isRequired : false})
@@ -22,15 +22,18 @@ export class UserEntity{
   @Prop({isRequired : true})
   lastName: string;
 
+  @Prop({isRequired : true})
+  password: string;
+
   @Prop({type : Date})
   updatedAt?: Date;
 
   @Prop()
   createdAt?: Date;
 
-  @Prop({type : String, default : ()=>uuid.v4() } )
+  @Prop({type : String, default : ()=> uuidv4() } )
   uuid: string;
 
 }
 
-export const CatSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User);

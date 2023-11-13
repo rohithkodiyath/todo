@@ -1,30 +1,23 @@
 import { IsDate, IsEmail, IsNotEmpty, Matches } from "class-validator";
 import { Optional } from "@nestjs/common";
 
-export class UserprofileDto {
-
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/,{
-    message : "Password must have 8 letters containing at least one capital letter etc"
-  })
-  password : string
-
-
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/,{
-    message : "Password must have 8 letters containing at least one capital letter etc"
-  })
-  confirmPassword : string
+export class TodoDto {
 
   @IsNotEmpty()
-  firstName : string
+  title : string
 
   @IsNotEmpty()
-  lastName : string
+  description : string
 
-  @IsEmail()
-  email : string
-
-  @IsNotEmpty()
   uuid : string
 
+
+  public static from(dto: Partial<TodoDto>) : TodoDto{
+    const it = new TodoDto();
+    it.title = dto.title;
+    it.description = dto.description;
+    it.uuid = dto.uuid;
+    return it;
+  }
 
 }

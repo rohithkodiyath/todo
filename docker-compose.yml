@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  todo-mongodb:
+    image: mongo
+    container_name: todo-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - todo-mongodb-data1:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: todoadmin
+      MONGO_INITDB_ROOT_PASSWORD: todopassword
+  todo-mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: todoadmin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: todopassword
+      ME_CONFIG_MONGODB_SERVER: todo-mongodb
+    links:
+      - todo-mongodb
+
+volumes:
+  todo-mongodb-data1:

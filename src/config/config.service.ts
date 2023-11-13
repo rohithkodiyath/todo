@@ -1,20 +1,15 @@
-import { Module, Logger } from '@nestjs/common';
-import { ConfigModule as ConfMod } from "@nestjs/config" ;
-import { customAppConfig } from "./model.config";
+import { Module, Logger, Injectable } from "@nestjs/common";
+import { ConfigModule as ConfMod , ConfigService as ConfService} from "@nestjs/config" ;
+import { customAppConfig, ModelConfig } from "./model.config";
 import * as process from "process";
 
-@Module({
-  imports : [ConfMod.forRoot({
-    load: [customAppConfig],
-    isGlobal : true,
-    ignoreEnvFile : true
-  })],
-  providers: []
-})
-export class ConfigModule {
+@Injectable()
+export class ConfigService {
 
-  constructor() {
+  constructor(private configService : ConfService) {}
 
+  public getConfig() : ModelConfig  {
+    return this.configService.get<ModelConfig>('app')
   }
 
 }

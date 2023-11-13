@@ -1,7 +1,7 @@
 import { IsDate, IsEmail, IsNotEmpty, Matches } from "class-validator";
 import { Optional } from "@nestjs/common";
 
-export class TodoDto {
+export class CreateTodoDto {
 
   @IsNotEmpty()
   title : string
@@ -9,5 +9,4 @@ export class TodoDto {
   @IsNotEmpty()
   description : string
 
-  uuid : string
 }

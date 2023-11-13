@@ -1,29 +1,27 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument,Document  } from "mongoose";
+import { HydratedDocument, Document, Schema as MongooseSchema } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
+import { User } from "../../user/entity/user.schema";
 
 
-export type UserDocument = HydratedDocument<User>;
+export type TodoDocument = HydratedDocument<Todo>;
 
 @Schema({ timestamps: true })
-export class Todo extends Document{
+export class Todo extends Document {
 
-
-  @Prop({type : Date, isRequired : false})
-  dob: Date | null;
-
-  @Prop({isRequired : true})
-  email: string;
+  constructor() {
+    super();
+  }
 
   @Prop({isRequired : true})
-  firstName: string;
+  title: string;
 
   @Prop({isRequired : true})
-  lastName: string;
+  description: string;
 
-  @Prop({isRequired : true})
-  password: string;
+  @Prop({type : MongooseSchema.Types.ObjectId, ref : "User"})
+  user: User
 
   @Prop({type : Date})
   updatedAt?: Date;
@@ -36,4 +34,4 @@ export class Todo extends Document{
 
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const TodoSchema = SchemaFactory.createForClass(Todo);
