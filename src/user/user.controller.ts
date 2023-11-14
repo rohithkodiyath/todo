@@ -14,9 +14,11 @@ import { ResponseDto } from "../common/dto/response.dto";
 import { ResetPasswordRequestDto } from "./dto/resetpassword.request.dto";
 import { ForgotPasswordRequestDto } from "./dto/forgotpassword.request.dto";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Public } from "../auth/decorator/public.decorator";
 
 @ApiTags('user')
 @Controller('user')
+@Public()
 export class UserController {
 
   private logger = new Logger(UserController.name);
@@ -35,12 +37,10 @@ export class UserController {
     });
   }
 
-  @ApiOperation({ summary: 'Forgot password',
-    description: 'Returns JWT valid for 1 hr',
-
-    })
+  @ApiOperation({ summary: 'Initiate password reset',
+    description: 'Initiate password reset, send OTP to user mail id'})
   @ApiTags('authentication')
-  @Post("/forgotpassword")
+  @Post("/initiatepasswordreset")
   public async forgetPassword(@Body() forgotPasswordRequestDto : ForgotPasswordRequestDto) :Promise<ResponseDto>{
     let userWithMailId = await this.userService.findUserByEmail(forgotPasswordRequestDto.email);
     if(!userWithMailId){
@@ -55,6 +55,9 @@ export class UserController {
     return responseDto;
   }
 
+  @ApiOperation({ summary: 'Reset password with OTP',
+    description: 'Reset password with OTP, sent to user mail id.'
+  })
   @ApiTags('authentication')
   @Post("resetpassword")
   public async resendPassword(@Body() resetPasswordRequestDto : ResetPasswordRequestDto):Promise<ResponseDto>{

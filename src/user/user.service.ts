@@ -28,6 +28,10 @@ export class UserService {
     }).exec();
   }
 
+  public async comparePasswords(input:string, hashedPassword : string):Promise<boolean> {
+    return await bcrypt.compare(input, hashedPassword);
+  }
+
 
   public async getAllUsers():Promise<User[]>{
     return await this.userModel.find().exec();
