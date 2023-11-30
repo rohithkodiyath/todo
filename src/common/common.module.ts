@@ -3,6 +3,7 @@ import { UtiltyService } from './service/utilty.service';
 import { ConfigModule } from "../config/config.module";
 import { APP_FILTER } from "@nestjs/core";
 import { HttpExceptionFilter } from "./filter/http.exception.filter";
+import { CommonController } from "./common.controller";
 
 
 @Module({
@@ -13,6 +14,7 @@ import { HttpExceptionFilter } from "./filter/http.exception.filter";
     }
   ],
   imports : [ConfigModule],
-  exports : [UtiltyService]
+  exports : [UtiltyService],
+  controllers: [CommonController]
 })
 export class CommonModule {}

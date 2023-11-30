@@ -59,8 +59,12 @@ export class UserService {
     await otpModel.save();
   }
 
+  public async deleteOtpForUser(user : User): Promise<void>{
+    await this.otpModel.deleteMany({ "user" : user }).exec();
+  }
 
-  public async  generateOtpForForgetPassword(userUuid : string){
+
+  public async  generateOtpForForgetPassword(userUuid : string, stubOtp : number  = null){
     let user = await this.getUserFromUuid(userUuid);
 
     if(user == null){
@@ -68,10 +72,10 @@ export class UserService {
     }
 
     // delete if any existing otp
-    await this.otpModel.deleteMany({ "user" : user }).exec();
+    await this.deleteOtpForUser(user);
 
     //generate otp and send to user email
-    let otp = this.generateOtp();
+    let otp = stubOtp ? stubOtp : this.generateOtp();
 
     let otpEntity = new Otp();
     otpEntity.otp = otp;
